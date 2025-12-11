@@ -3,8 +3,10 @@ import MoneyFlowChart from '@/components/dashboardtwo/MoneyFlowChart';
 
 import { getUserAccounts, getRecentTransactions } from "@/_actions/getAccounts";
 import { auth } from "@clerk/nextjs/server";
-import { Card } from '@/components/ui/card';
+import AllTopGroups from '@/components/AllTopGroups';
 import TransactionList from '@/components/dashboardtwo/TransactionList';
+import { groups } from '@/config/schema';
+import TargetGoalsList from '@/components/TargetGoalsList';
 
 
 export default async function Dashboard() {
@@ -13,7 +15,7 @@ export default async function Dashboard() {
     if (!userId) {
       return <div>You must be logged in.</div>;
     }
-  
+    
     const accounts = await getUserAccounts(userId);
     const transactions = await getRecentTransactions(userId);
   
@@ -29,14 +31,14 @@ export default async function Dashboard() {
             <section className="grid md:grid-cols-2 gap-4 p-4">
               <StatsCard title="Current Account Balance"  balance={current?.balance ?? 0} change="+16%" chart={<div />} />
               <StatsCard title="Savings Account Balance"  balance={savings?.balance ?? 0} change="-0.6%" chart={<div />} />
-              {/* <StorageUsage /> */}
             </section>
             <section className="p-4">
                 <MoneyFlowChart />
+                <TargetGoalsList />
             </section>
           </div>
           <div className='w-full md:w-[33%] p-4'>
-            <Card />
+            <AllTopGroups />
           </div>
         </div>
         <section className="p-4 md:px-8">

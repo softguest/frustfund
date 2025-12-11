@@ -45,6 +45,7 @@ export const accounts = pgTable("accounts", {
   name: varchar("name", { length: 255 }).notNull(),
   type: varchar("type", { length: 50 }).notNull(),
   balance: numeric("balance", { precision: 12, scale: 2 }).default("0"),
+  accountNumber: varchar("account_number", { length: 20 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -57,7 +58,6 @@ export const targetGoals = pgTable("target_goals", {
   deadline: timestamp("deadline"),
   createdAt: timestamp("created_at").defaultNow(),
 });
-
 
 // GROUPS
 export const groups = pgTable("groups", {
