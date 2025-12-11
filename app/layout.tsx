@@ -21,26 +21,32 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider appearance={{
-      theme: "simple",
-      elements: {
-        headerTitle: {
-          fontSize: "32px",
+    <ClerkProvider
+      appearance={{
+        theme: "simple",
+        elements: {
+          headerTitle: {
+            fontSize: "32px",
+          },
+          formButtonPrimary: {
+            backgroundColor: "red",
+            color: "white",
+            borderColor: "#a80000ff",
+            fontSize: "18px",
+          },
+          formButtonPrimary_hover: {
+            backgroundColor: "#c20000ff",
+            borderColor: "#c20000ff",
+          }
         }
-      }
-    }}>
+      }}
+    >
       <html lang="en">
         <body 
         >
           <Provider>
-            <div className="flex">
-              {/* Sidebar handles both desktop and mobile */}
-              <Sidebar />
-                <main className="flex-1 bg-gray-50">
-                  <DashboardHeader />
-                    {/* Main content */}
+            <div>
                     {children}
-                </main>
             </div>
             <Toaster position="top-right" />
           </Provider>
