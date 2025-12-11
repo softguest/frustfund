@@ -14,7 +14,7 @@ interface TransactionListProps {
 
 export default function TransactionList({ transactions }: { transactions: any[] }) {
   return (
-    <div className="bg-white rounded shadow p-4 mt-6">
+    <div className="w-full bg-white rounded shadow p-4 mt-6">
       <h3 className="text-lg font-semibold text-text mb-4">Recent Transactions</h3>
       <table className="w-full text-left">
         <thead>

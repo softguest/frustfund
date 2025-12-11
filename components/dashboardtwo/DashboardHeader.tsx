@@ -6,8 +6,8 @@ export default function DashboardHeader() {
     const { user } = useUser();
   return (
     <header className="flex justify-between items-center p-4 border-b border-muted bg-secondary">
-      <h1 className="text-2xl font-bold text-text">Banking Dashboard</h1>
-      <div className="flex items-center gap-4">
+      <h1 className="hidden md:block md:text-2xl font-bold text-text">Banking Dashboard</h1>
+      <div className="flex justify-between items-center gap-4">
         <input type="text" placeholder="Search..." className="border px-3 py-1 rounded" />
         {!user ?
             <Link href="/sign-in">
@@ -15,13 +15,13 @@ export default function DashboardHeader() {
                     Login
                 </button>
             </Link> :
-            <div className="hidden md:block">
+            <div className="md:block">
                 <div className="flex items-center gap-5  border border-red-600 rounded-full">
                     <UserButton />
                 </div>
             </div>
         }
-        <span className="text-sm font-bold">{user?.firstName} {user?.lastName}</span>
+        <span className="hidden md:block text-sm font-bold">{user?.firstName} {user?.lastName}</span>
         <div className="w-6 h-6 bg-muted rounded-full" />
       </div>
     </header>

@@ -23,21 +23,21 @@ const navAdmins = [
   { label: 'Withdraw Request', href: '/admin/withdrawals', icon: <FiRepeat className="transition-transform duration-200 group-hover:scale-110" /> },
 ];
 
-export default async function Sidebar() {
+export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   // const thisUser = await auth();
 
   return (
     <>
       {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 top-4">
+      <div className="md:hidden bg-transparent flex border-b border-gray-200 top-4">
         <button onClick={() => setIsOpen(true)} className="text-red-600 text-2xl">
           <FiMenu />
         </button>
         <h2 className="hidden md:block text-lg font-extrabold text-red-600">TRUSTFUND</h2>
       </div>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-8 md:w-64 bg-white border-r border-gray-200 h-screen p-4">
+      <aside className="hidden md:block w-8 md:w-64 bg-white border-r border-gray-200 p-4">
         <div className='flex space-x-2'>
           <div className='h-[30px] w-[30px] rounded-full bg-red-500'/>
           <h2 className="text-xl font-bold text-red-600 mb-6">TRUSTFUND</h2>

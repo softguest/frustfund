@@ -36,7 +36,7 @@ export default function RootLayout({
             <div className="flex">
               {/* Sidebar handles both desktop and mobile */}
               <Sidebar />
-                <main className="flex-1 bg-gray-50 min-h-screen">
+                <main className="flex-1 bg-gray-50">
                   <DashboardHeader />
                     {/* Main content */}
                     {children}
