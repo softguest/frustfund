@@ -29,13 +29,20 @@ export default async function Sidebar() {
 
   return (
     <>
+      {/* Mobile Header */}
+      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 top-4">
+        <button onClick={() => setIsOpen(true)} className="text-red-600 text-2xl">
+          <FiMenu />
+        </button>
+        <h2 className="hidden md:block text-lg font-extrabold text-red-600">TRUSTFUND</h2>
+      </div>
       {/* Desktop Sidebar */}
       <aside className="hidden md:block w-8 md:w-64 bg-white border-r border-gray-200 h-screen p-4">
         <div className='flex space-x-2'>
           <div className='h-[30px] w-[30px] rounded-full bg-red-500'/>
           <h2 className="text-xl font-bold text-red-600 mb-6">TRUSTFUND</h2>
         </div>
-        <ul>
+        <ul className='p-4'>
           {navItems.map(item => (
             <li key={item.label} className="mb-4">
               <Link
@@ -48,15 +55,24 @@ export default async function Sidebar() {
             </li>
           ))}
         </ul>
+        {/* Admin Nativation Links  */}
+        <div className='bg-red-500 w-full px-4 py-2 flex items-center mt-6 font-bold text-white space-x-2' ><FiMenu className='' size="26"/> <div className=''>Admin Area</div></div>
+        {/* <hr className="my-2" /> */}
+        <ul className='p-4'>
+          {navAdmins.map(item => (
+            <li key={item.label} className="mb-4">
+              <Link
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 text-gray-700 hover:text-red-600 group"
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </aside>
-
-      {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 bg-white">
-        <button onClick={() => setIsOpen(true)} className="text-red-600 text-2xl">
-          <FiMenu />
-        </button>
-        <h2 className="text-lg font-extrabold text-red-600">TRUSTFUND</h2>
-      </div>
 
       {/* Mobile Sidebar */}
       {isOpen && (
@@ -83,24 +99,23 @@ export default async function Sidebar() {
                 </li>
               ))}
             </ul>
-            {/* Admin Navigations  */}
-
-              <div>Admin Area</div>
-              <hr />
-              <ul>
-                {navAdmins.map(item => (
-                  <li key={item.label} className="mb-4">
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 text-gray-700 hover:text-red-600 group"
-                    >
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+             {/* Admin Nativation Links  */}
+            <div className='bg-red-500 w-full px-4 py-2 flex items-center mt-6 font-bold text-white space-x-2' ><FiMenu className='' size="26"/> <div className=''>Admin Area</div></div>
+            {/* <hr className="my-2" /> */}
+            <ul className='p-4'>
+              {navAdmins.map(item => (
+                <li key={item.label} className="mb-4">
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 text-gray-700 hover:text-red-600 group"
+                  >
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}

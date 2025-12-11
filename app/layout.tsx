@@ -8,6 +8,7 @@ import Provider from "@/provider";
 import { Toaster } from "react-hot-toast";
 import Sidebar from '@/components/dashboardtwo/Sidebar';
 import DashboardHeader from '@/components/dashboardtwo/DashboardHeader';
+import { elements } from 'chart.js';
 
 export const metadata: Metadata = {
   title: 'TRUSTFUND',
@@ -20,7 +21,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{
+      theme: "simple",
+      elements: {
+        headerTitle: {
+          fontSize: "32px",
+        }
+      }
+    }}>
       <html lang="en">
         <body 
         >
