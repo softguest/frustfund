@@ -2,13 +2,9 @@ import { type Metadata } from 'next'
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
-import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Provider from "@/provider";
 import { Toaster } from "react-hot-toast";
-import Sidebar from '@/components/dashboardtwo/Sidebar';
-import DashboardHeader from '@/components/dashboardtwo/DashboardHeader';
-import { elements } from 'chart.js';
 
 export const metadata: Metadata = {
   title: 'TRUSTFUND',

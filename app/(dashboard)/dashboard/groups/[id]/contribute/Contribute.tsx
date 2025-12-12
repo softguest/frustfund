@@ -22,17 +22,20 @@ export default function Contribute({ groupId }: { groupId: string }) {
   }
 
   return (
-    <div className="p-16">
-      <form onSubmit={handleContribute} className="mt-4 space-y-2">
-        <input
-          type="number"
-          name="amount"
-          min="100"
-          className="w-full border p-2"
-          placeholder="Enter amount"
-        />
-        <Button className="w-full bg-black text-white p-2">Contribute</Button>
-      </form>
+    <div className="flex justify-center p-6">
+      <div>
+        <h4>Enter Amount to Contribute to this group.</h4>
+          <form onSubmit={handleContribute} className="mt-4 m-w-32 space-y-2">
+            <input
+              type="number"
+              name="amount"
+              min="100"
+              className="w-full border p-2"
+              placeholder="Enter amount"
+            />
+            <Button className="w-full bg-destructive text-white p-2">Contribute</Button>
+          </form>
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default function AllTopGroups() {
   }, []);
 
   return (
-    <div className="px-6 pb-6" >
+    <div className=" pb-6" >
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold mb-4">Top Groups</h1>
         <Link href="/dashboard/groups/create">

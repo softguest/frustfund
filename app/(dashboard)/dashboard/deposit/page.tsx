@@ -75,7 +75,7 @@ export default function DepositPage() {
             ))}
           </select>
 
-          <Button disabled={loading} onClick={handleDeposit}>
+          <Button className="w-full bg-destructive text-white" disabled={loading} onClick={handleDeposit}>
             {loading ? "Processing…" : "Deposit"}
           </Button>
 

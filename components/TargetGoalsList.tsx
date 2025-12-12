@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from 'react';
+import { Progress } from '@/components/ui/progress';
 
 interface TargetGoal {
   id: string;
@@ -19,24 +19,32 @@ export default function TargetGoalsList() {
   useEffect(() => {
     async function fetchGoals() {
       try {
-        const res = await fetch("/api/accounts/target-goal");
+        const res = await fetch('/api/accounts/target-goal');
         const data = await res.json();
-
         setGoals(data);
       } catch (err) {
-        console.error("Error fetching goals:", err);
+        console.error('Error fetching goals:', err);
       } finally {
         setLoading(false);
       }
     }
-
     fetchGoals();
   }, []);
 
   if (loading) {
     return (
-      <div className="text-center py-6 font-medium text-gray-600">
-        Loading goals...
+      <div className="space-y-3">
+        {[1, 2, 3].map((_, i) => (
+          <div
+            key={i}
+            className="p-4 bg-white rounded-xl shadow border animate-pulse"
+          >
+            <div className="h-4 w-1/3 bg-gray-200 rounded mb-2" />
+            <div className="h-6 w-1/2 bg-gray-200 rounded mb-2" />
+            <div className="h-3 w-1/4 bg-gray-200 rounded mb-2" />
+            <div className="h-2 bg-gray-200 rounded mt-2" />
+          </div>
+        ))}
       </div>
     );
   }
@@ -51,33 +59,32 @@ export default function TargetGoalsList() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
       {goals.map(goal => {
-        const progress =
-          (goal.currentBalance / goal.targetAmount) * 100;
+        const progress = (goal.currentBalance / goal.targetAmount) * 100;
 
         return (
           <div
             key={goal.id}
-            className="p-4 bg-white rounded shadow border"
+            className="p-4 bg-white rounded-xl shadow border flex flex-col justify-between"
           >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">{goal.name}</h2>
-              <span className="text-sm text-gray-500">
-                Deadline: {new Date(goal.deadline).toLocaleDateString()}
+            <div className="flex justify-between items-start">
+              <h2 className="text-lg font-bold text-gray-700">{goal.name}</h2>
+              <span className="text-xs sm:text-sm text-gray-500">
+                {new Date(goal.deadline).toLocaleDateString()}
               </span>
             </div>
 
-            <p className="text-sm text-gray-700 mt-1">
-              Target: <strong>{goal.targetAmount.toLocaleString()} FCFA</strong>
-            </p>
+            <div className="mt-2 space-y-1">
+              <p className="text-sm text-gray-700">
+                Target: <strong>{goal.targetAmount.toLocaleString()} FCFA</strong>
+              </p>
+              <p className="text-sm text-gray-700">
+                Saved: <strong>{goal.currentBalance.toLocaleString()} FCFA</strong>
+              </p>
+            </div>
 
-            <p className="text-sm text-gray-700 mt-1">
-              Saved:{" "}
-              <strong>{goal.currentBalance.toLocaleString()} FCFA</strong>
-            </p>
-
-            <Progress value={progress} className="h-2 mt-3" />
+            <Progress value={progress} className="h-2 mt-3 rounded-full" />
 
             <p className="text-xs text-gray-500 mt-1">
               {progress.toFixed(0)}% completed

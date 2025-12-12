@@ -25,9 +25,9 @@ export default function MoneyFlowChart() {
   const [chartData, setChartData] = useState<ChartData<'bar'>>({
     labels,
     datasets: [
-      { label: 'Deposits', data: [], backgroundColor: '#E53935', borderRadius: 6 },
-      { label: 'Transfers', data: [], backgroundColor: '#FFCDD2', borderRadius: 6 },
-      { label: 'Withdrawals', data: [], backgroundColor: '#9E9E9E', borderRadius: 6 },
+      { label: 'Deposits', data: [], backgroundColor: '#22c55e', borderRadius: 6 },
+      { label: 'Transfers', data: [], backgroundColor: '#3b82f6', borderRadius: 6 },
+      { label: 'Withdrawals', data: [], backgroundColor: '#ef4444', borderRadius: 6 },
     ],
   });
 
@@ -36,7 +36,6 @@ export default function MoneyFlowChart() {
       const res = await fetch('/api/analytics/money-flow');
       const data = await res.json();
 
-      // Prepare 12 months fixed
       const deposits = Array(12).fill(0);
       const withdrawals = Array(12).fill(0);
       const transfers = Array(12).fill(0);
@@ -51,9 +50,9 @@ export default function MoneyFlowChart() {
       setChartData({
         labels,
         datasets: [
-          { label: 'Deposits', data: deposits, backgroundColor: '#E53935', borderRadius: 6 },
-          { label: 'Transfers', data: transfers, backgroundColor: '#FFCDD2', borderRadius: 6 },
-          { label: 'Withdrawals', data: withdrawals, backgroundColor: '#9E9E9E', borderRadius: 6 },
+          { label: 'Deposits', data: deposits, backgroundColor: '#22c55e', borderRadius: 6 },
+          { label: 'Transfers', data: transfers, backgroundColor: '#3b82f6', borderRadius: 6 },
+          { label: 'Withdrawals', data: withdrawals, backgroundColor: '#ef4444', borderRadius: 6 },
         ],
       });
     }
@@ -63,37 +62,48 @@ export default function MoneyFlowChart() {
 
   const options: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false, // ✅ Allows height to be set via CSS
     plugins: {
       legend: {
         position: 'top',
-        labels: { color: '#333', font: { size: 12, weight: 'bold' } },
+        labels: {
+          color: '#374151',
+          font: { size: 12, weight: 'bold' },
+        },
       },
       title: {
         display: true,
         text: 'Money Flow (12 Months)',
-        color: '#333',
-        font: { size: 16, weight: 'bold' },
+        color: '#111827',
+        font: { size: 14, weight: 'bold' }, // Smaller for mobile
       },
       tooltip: {
         callbacks: {
-          label: (ctx) => `${ctx.dataset.label}: ${Number(ctx.parsed.y).toLocaleString()} XAF`,
+          label: (ctx) =>
+            `${ctx.dataset.label}: ${Number(ctx.parsed.y).toLocaleString()} XAF`,
         },
       },
     },
     scales: {
-      x: { ticks: { color: '#333' }, grid: { color: '#E0E0E0' } },
+      x: {
+        ticks: { color: '#374151', font: { size: 10 } },
+        grid: { color: '#e5e7eb' },
+        stacked: false,
+      },
       y: {
         ticks: {
-          color: '#333',
+          color: '#374151',
+          font: { size: 10 },
           callback: (value) => `${Number(value).toLocaleString()} XAF`,
         },
-        grid: { color: '#E0E0E0' },
+        grid: { color: '#e5e7eb' },
       },
     },
   };
 
   return (
-    <div className="w-full bg-white rounded shadow p-4 mt-6">
+    <div className="w-full bg-white rounded-xl shadow p-4 mt-6 h-64 sm:h-80">
+      {/* Responsive container */}
       <Bar options={options} data={chartData} />
     </div>
   );
