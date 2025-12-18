@@ -51,11 +51,6 @@ export default function GroupsList({ groups, loading, onJoin }: GroupsListProps)
                         <Button variant="outline">View Group</Button>
                     </Link>
                 </div>
-                <div>
-                    <Link href={`/dashboard/groups/${group.id}/contribute`} className=" w-full">
-                        <Button variant="destructive" className="text-white">Contribute to group <FiArrowRight /></Button>
-                    </Link>
-                </div>
           </div>
         </div>
       ))}
