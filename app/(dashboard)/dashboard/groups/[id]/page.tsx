@@ -18,6 +18,7 @@ export default async function GroupDetailsPage({
   /* -------- AUTH -------- */
   const session = await auth();
   const userId = session?.userId;
+  console.log("userId is:", userId);
 
   if (!userId) throw new Error("Unauthorized");
 
@@ -41,7 +42,6 @@ export default async function GroupDetailsPage({
   const isCreator = group.creatorId === userId;
   console.log("isCreator is:", isCreator);
 
-  /* -------- MEMBERS -------- */
   /* -------- MEMBERS -------- */
   const members = await db
     .select({

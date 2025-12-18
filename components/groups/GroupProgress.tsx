@@ -19,7 +19,7 @@ export default function GroupProgress({
       </p>
       <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
         <div
-          className="bg-green-600 h-3 rounded-full"
+          className="bg-destructive h-4 rounded-full"
           style={{ width: `${percent}%` }}
         />
       </div>

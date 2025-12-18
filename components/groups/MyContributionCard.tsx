@@ -30,9 +30,9 @@ export default function MyContributionCard({
       <Stat label="Expected" value={`${expected.toLocaleString()} FCFA`} />
       <Stat label="Remaining" value={`${remaining.toLocaleString()} FCFA`} />
 
-      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-green-600"
+          className="h-full bg-destructive"
           style={{ width: `${percentage}%` }}
         />
       </div>
