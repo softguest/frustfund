@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import GroupsList from "@/components/GroupsList";
 import { Button } from "@/components/ui/button";
@@ -60,7 +59,6 @@ export default function AllGroupsPage() {
           </Button>
         </Link>
       </div>
-
       <input
         type="text"
         placeholder="Search groups..."
@@ -68,7 +66,6 @@ export default function AllGroupsPage() {
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-
       <GroupsList groups={filteredGroups} loading={loading} onJoin={joinGroup} />
     </div>
   );

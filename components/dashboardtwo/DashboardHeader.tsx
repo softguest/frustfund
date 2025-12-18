@@ -35,7 +35,7 @@ export default function DashboardHeader({ onOpenSidebar }: DashboardHeaderProps)
         
 
         {/* RIGHT: Auth / User */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           {/* CENTER: Search (Desktop only) */}
         <div className="hidden md:flex flex-1 justify-center px-6">
           <input
@@ -52,9 +52,7 @@ export default function DashboardHeader({ onOpenSidebar }: DashboardHeaderProps)
             </Link>
           ) : (
             <div className="flex items-center gap-2">
-              <div className='border border-destructive border-width-6 rounded-full '>
-                <UserButton />
-              </div>
+              <UserButton />
               <span className="hidden lg:block text-sm font-semibold text-gray-700">
                 {user.firstName} {user.lastName}
               </span>

@@ -77,7 +77,7 @@ export default function CreateGroupPage() {
         type="number"
         placeholder="Contribution per member (XAF)"
       />
-      <Button disabled={loading}>{loading ? "..." : "Create Group"}</Button>
+      <Button className="w-full text-white" variant="destructive" disabled={loading}>{loading ? "..." : "Create Group"}</Button>
     </form>
   );
 }
