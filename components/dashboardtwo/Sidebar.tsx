@@ -174,7 +174,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const SidebarContent = (
-    <div className="relative flex flex-col h-full p-4 space-y-6 w-full">
+    <div className="relative flex flex-col p-4 space-y-6 w-full">
       {/* Logo */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
@@ -197,7 +197,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             href={item.href}
             onClick={onClose}
             className="
-              flex items-center gap-3 p-3 rounded-xl text-gray-200
+              flex items-center gap-3 p-3 rounded-xl text-gray-200 bg-slate-100
               hover:bg-red-700 text-gray-700 hover:text-white transition
               backdrop-blur-md
             "
@@ -220,9 +220,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               href={item.href}
               onClick={onClose}
               className="
-                flex items-center gap-3 p-3 rounded-xl text-gray-200
-                hover:bg-red-700 text-gray-700 hover:text-white transition
-                backdrop-blur-md
+                flex items-center gap-3 p-3 rounded-xl text-gray-200 bg-slate-100
+              hover:bg-red-700 text-gray-700 hover:text-white transition
+              backdrop-blur-md
               "
             >
               <span className="text-xl">{item.icon}</span>
@@ -237,7 +237,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 h-screen bg-white/20 backdrop-blur-xl border-r border-white/20 shadow-lg">
+      <aside className="hidden md:flex flex-col w-64 bg-white/20 backdrop-blur-xl border-r border-white/20 shadow-lg">
         {SidebarContent}
       </aside>
 
@@ -246,7 +246,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="fixed inset-0 z-50 flex">
           {/* Overlay */}
           <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            className="absolute inset-0 bg-white/20 bg-opacity-50 backdrop-blur-sm"
             onClick={onClose}
           />
           {/* Sliding Sidebar */}

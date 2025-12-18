@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -84,7 +83,6 @@ export default function TargetAccountForm() {
             required
           />
         </div>
-
         <Button type="submit" disabled={loading}>
           {loading ? "Creating..." : "Create Target Account"}
         </Button>

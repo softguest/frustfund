@@ -1,9 +1,7 @@
 'use client';
-
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import TopThreeGroups from "@/components/TopThreeGroups";
 
 interface Group {
   id: string;
