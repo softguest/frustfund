@@ -29,15 +29,19 @@ export default async function GroupDetailsPage({
       description: groups.description,
       goalAmount: groups.goalAmount,
       creatorName: users.fullName,
+      creatorId: groups.userId,
     })
     .from(groups)
     .leftJoin(users, eq(groups.userId, users.id))
     .where(eq(groups.id, id))
     .limit(1)
     .then((res) => res[0]);
-
   if (!group) throw new Error("Group not found");
 
+  const isCreator = group.creatorId === userId;
+  console.log("isCreator is:", isCreator);
+
+  /* -------- MEMBERS -------- */
   /* -------- MEMBERS -------- */
   const members = await db
     .select({
@@ -54,9 +58,19 @@ export default async function GroupDetailsPage({
 
   /* -------- CONTRIBUTIONS -------- */
   const contributionsList = await db
-    .select()
-    .from(contributions)
-    .where(eq(contributions.groupId, id));
+  .select({
+    id: contributions.id,
+    amount: contributions.amount,
+    createdAt: contributions.createdAt,
+    userId: contributions.userId,
+    user: {
+      id: users.id,
+      fullName: users.fullName,
+    },
+  })
+  .from(contributions)
+  .leftJoin(users, eq(contributions.userId, users.id))
+  .where(eq(contributions.groupId, id));
 
   /* -------- TOTAL RAISED -------- */
   const totalRaised = contributionsList.reduce(
@@ -111,9 +125,10 @@ export default async function GroupDetailsPage({
 
   /* -------- UI -------- */
   return (
-    <div className="container p-8 space-y-8">
+    <div className="container p-2 md:p-8 space-y-8">
       <div>
         <h1 className="text-3xl font-bold">{group.name}</h1>
+        <hr className="my-4"/>
         <p className="text-gray-600">{group.description}</p>
         <p className="text-sm text-gray-400">
           Created by {group.creatorName}
@@ -138,13 +153,22 @@ export default async function GroupDetailsPage({
             : "BEHIND"
         }
       />
-
-      <ContributionsChart contributions={contributionsList} />
+      {/* <MembersTable members={members} /> */}
+      <MembersTable
+        groupId={group.id}
+        isCreator={isCreator}
+        members={memberStats.map((m) => ({ ...m, userId: m.userId ?? "" }))}
+      />
 
       {/* <MembersTable members={members} /> */}
-      <MembersTable members={memberStats} />
+      {/* <MembersTable members={memberStats.map((m) => ({ ...m, userId: m.userId ?? "" }))} /> */}
 
-      <ContributionsTable contributions={contributionsList} />
+      <ContributionsTable
+        contributions={contributionsList.map((c) => ({
+          ...c,
+          createdAt: c.createdAt ?? new Date(),
+        }))}
+      />
     </div>
   );
 }
