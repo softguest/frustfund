@@ -1,11 +1,13 @@
 import MembersTable from "@/components/MembersTable";
 import ContributionsTable from "@/components/ContributionsTable";
+import GroupProgress from "@/components/groups/GroupProgress";
+import ContributionsChart from "@/components/groups/ContributionsChart";
+import MyContributionCard from "@/components/groups/MyContributionCard";
+
 import { db } from "@/config/db";
-import { groups, groupMembers, contributions } from "@/config/schema";
+import { groups, groupMembers, contributions, users } from "@/config/schema";
 import { eq } from "drizzle-orm";
-import { users } from "@/config/schema";
-
-
+import { auth } from "@clerk/nextjs/server";
 export default async function GroupDetailsPage({
   params,
 }: {
@@ -13,58 +15,136 @@ export default async function GroupDetailsPage({
 }) {
   const { id } = await params;
 
-const group = await db
-  .select({
-    id: groups.id,
-    name: groups.name,
-    description: groups.description,
-    createdAt: groups.createdAt,
-    userId: groups.userId,
-    creatorName: users.fullName,   // 👈 add creator name
-    creatorEmail: users.email,     // optional
-  })
-  .from(groups)
-  .leftJoin(users, eq(groups.userId, users.id))
-  //@ts-ignore
-  .where(eq(groups.id, id))
-  .limit(1)
-  .then((res) => res[0]);
+  /* -------- AUTH -------- */
+  const session = await auth();
+  const userId = session?.userId;
 
-    //   // 👉 Fetch members
-const members = await db
-  .select({
-    memberId: groupMembers.id,
-    joinedAt: groupMembers.joinedAt,
-    userId: users.id,
-    name: users.fullName,
-    email: users.email,
-  })
-  .from(groupMembers)
-  .leftJoin(users, eq(groupMembers.userId, users.id))
-  .where(eq(groupMembers.groupId, id));
+  if (!userId) throw new Error("Unauthorized");
 
+  /* -------- GROUP -------- */
+  const group = await db
+    .select({
+      id: groups.id,
+      name: groups.name,
+      description: groups.description,
+      goalAmount: groups.goalAmount,
+      creatorName: users.fullName,
+    })
+    .from(groups)
+    .leftJoin(users, eq(groups.userId, users.id))
+    .where(eq(groups.id, id))
+    .limit(1)
+    .then((res) => res[0]);
 
-    //   // 👉 Fetch contributions
+  if (!group) throw new Error("Group not found");
+
+  /* -------- MEMBERS -------- */
+  const members = await db
+    .select({
+      memberId: groupMembers.id,
+      userId: users.id,
+      name: users.fullName,
+      email: users.email,
+      expectedAmount: groupMembers.expectedAmount,
+      joinedAt: groupMembers.joinedAt,
+    })
+    .from(groupMembers)
+    .leftJoin(users, eq(groupMembers.userId, users.id))
+    .where(eq(groupMembers.groupId, id));
+
+  /* -------- CONTRIBUTIONS -------- */
   const contributionsList = await db
     .select()
     .from(contributions)
-    //@ts-ignore
     .where(eq(contributions.groupId, id));
 
-  if (!group) return <p className="p-10 text-center">Group not found</p>;
-    return (
-      <div className="container p-8 space-y-6">
-        <h1 className="text-3xl font-bold">{group.name}</h1>
-        <p className="text-gray-700">{group.description ?? "No description"}</p>
-        <p className="text-sm text-gray-500">
-          Created by <span className="font-medium">{group.creatorName}</span> on{" "}
-          {new Date(group.createdAt).toLocaleDateString()}
-        </p>
-        {/* MEMBERS */}
-       <MembersTable members={members} />
+  /* -------- TOTAL RAISED -------- */
+  const totalRaised = contributionsList.reduce(
+    (sum, c) => sum + Number(c.amount),
+    0
+  );
 
-       {/* CONTRIBUTIONS */}
-       <ContributionsTable contributions={contributionsList} />
+  const memberStats = members.map((member) => {
+    const contributed = contributionsList
+      .filter((c) => c.userId === member.userId)
+      .reduce((sum, c) => sum + Number(c.amount), 0);
+
+    const expected = Number(member.expectedAmount);
+    const remaining = Math.max(expected - contributed, 0);
+
+    let status: "COMPLETED" | "ON_TRACK" | "BEHIND" = "BEHIND";
+
+    if (contributed >= expected) status = "COMPLETED";
+    else if (contributed >= expected * 0.5) status = "ON_TRACK";
+
+    return {
+      ...member,
+      contributed,
+      expected,
+      remaining,
+      status,
+      progress:
+        expected > 0
+          ? Math.min((contributed / expected) * 100, 100)
+          : 0,
+    };
+  });
+
+  /* -------- MY MEMBER RECORD -------- */
+  const myMember = members.find((m) => m.userId === userId);
+
+  if (!myMember) {
+    throw new Error("You are not a member of this group");
+  }
+
+  /* -------- MY CONTRIBUTION -------- */
+  const myContribution = contributionsList
+    .filter((c) => c.userId === userId)
+    .reduce((sum, c) => sum + Number(c.amount), 0);
+
+  const expectedAmount = Number(myMember.expectedAmount);
+
+  const myProgress =
+    expectedAmount > 0
+      ? Math.min((myContribution / expectedAmount) * 100, 100)
+      : 0;
+
+  /* -------- UI -------- */
+  return (
+    <div className="container p-8 space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold">{group.name}</h1>
+        <p className="text-gray-600">{group.description}</p>
+        <p className="text-sm text-gray-400">
+          Created by {group.creatorName}
+        </p>
       </div>
-    );
-  } 
+
+      <GroupProgress
+        goal={Number(group.goalAmount)}
+        raised={totalRaised}
+      />
+
+      <MyContributionCard
+        contributed={myContribution}
+        expected={expectedAmount}
+        percentage={myProgress}
+        remaining={Math.max(expectedAmount - myContribution, 0)}
+        status={
+          myContribution >= expectedAmount
+            ? "COMPLETED"
+            : myProgress >= 50
+            ? "ON_TRACK"
+            : "BEHIND"
+        }
+      />
+
+      <ContributionsChart contributions={contributionsList} />
+
+      {/* <MembersTable members={members} /> */}
+      <MembersTable members={memberStats} />
+
+      <ContributionsTable contributions={contributionsList} />
+    </div>
+  );
+}

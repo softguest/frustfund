@@ -85,6 +85,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="fixed inset-y-0 left-0 w-64 bg-white p-4 shadow-lg">
             {/* Close Button */}
             <div className="flex justify-between items-center mb-6">
+              <div className="h-[30px] w-[30px] rounded-full bg-destructive" />
               <h2 className="text-xl font-extrabold text-red-600">TRUSTFUND</h2>
               <button onClick={onClose} className="text-gray-700 text-2xl">
                 <FiX />
@@ -92,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
 
             {/* Nav Items */}
-            <ul>
+            <ul className="p-4">
               {navItems.map((item) => (
                 <li key={item.label} className="mb-4">
                   <Link
@@ -108,7 +109,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </ul>
 
             {/* Admin */}
-            <div className="bg-red-500 w-full px-4 py-2 mt-6 font-bold text-white">
+            <div className="bg-destructive w-full px-4 py-2 mt-6 font-bold text-white">
               Admin Area
             </div>
 

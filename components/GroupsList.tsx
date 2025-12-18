@@ -44,11 +44,11 @@ export default function GroupsList({ groups, loading, onJoin }: GroupsListProps)
                     disabled={group.isMember || loading}
                     onClick={() => onJoin(group.id)}
                     >
-                        {group.isMember ? "Joined" : "Join"}
+                        {group.isMember ? "Member" : "Join"}
                     </Button>
 
                     <Link href={`/dashboard/groups/${group.id}`}>
-                        <Button variant="outline">Details</Button>
+                        <Button variant="outline">View Group</Button>
                     </Link>
                 </div>
                 <div>

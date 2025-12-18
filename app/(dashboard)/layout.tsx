@@ -18,12 +18,10 @@ export default function Layout({
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
-
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-x-hidden">
         {/* Header */}
         <DashboardHeader onOpenSidebar={() => setSidebarOpen(true)} />
-
         {/* Page Content */}
         <div className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto space-y-6">
           {children}

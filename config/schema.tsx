@@ -1,4 +1,4 @@
-import { pgTable, pgEnum,uuid, varchar, timestamp, integer, numeric, text } from "drizzle-orm/pg-core";
+import { pgTable, pgEnum,uuid, varchar, timestamp, integer, numeric, text, decimal } from "drizzle-orm/pg-core";
 // import { users } from "./users";
 import { relations } from "drizzle-orm";
 
@@ -23,7 +23,6 @@ export const users = pgTable("users", {
 
   createdAt: timestamp("created_at").defaultNow(),
 });
-
 
 export const kyc = pgTable("kyc", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -59,20 +58,26 @@ export const targetGoals = pgTable("target_goals", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// GROUPS
 export const groups = pgTable("groups", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
-  userId: text("user_id").notNull(), 
+  userId: text("user_id").notNull(), // admin
+  goalAmount: numeric("goal_amount", { precision: 12, scale: 2 }).notNull(),
+  contributionAmount: numeric("contribution_amount", {
+    precision: 12,
+    scale: 2,
+  }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
 
 // GROUP MEMBERS
 export const groupMembers = pgTable("group_members", {
   id: uuid("id").defaultRandom().primaryKey(),
   groupId: uuid("group_id").notNull(),
   userId: text("user_id").notNull(), 
+  expectedAmount: decimal("expected_amount", { precision: 10, scale: 2 }),
   joinedAt: timestamp("joined_at").defaultNow(),
 });
 
@@ -81,6 +86,7 @@ export const contributions = pgTable("contributions", {
   id: uuid("id").defaultRandom().primaryKey(),
   groupId: uuid("group_id").notNull(),
   userId: text("user_id").notNull(), 
+  accountId: uuid("account_id").notNull(), // ✅ NEW
   amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
