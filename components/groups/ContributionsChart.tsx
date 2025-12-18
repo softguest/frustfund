@@ -17,7 +17,7 @@ export default function ContributionsChart({ contributions }: any) {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow h-64">
-      <h3 className="font-medium mb-2">Contributions</h3>
+      <h3 className="text-lg font-semibold">Contributions</h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="name" />

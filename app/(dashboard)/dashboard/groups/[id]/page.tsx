@@ -134,25 +134,33 @@ export default async function GroupDetailsPage({
           Created by {group.creatorName}
         </p>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          {/* <h2 className="text-xl font-bold">Members</h2> */}
+           <GroupProgress
+              goal={Number(group.goalAmount)}
+              raised={totalRaised}
+            />
+        </div>
+        <div>
+          {/* <h2 className="text-xl font-bold">Contributions</h2> */}
+                <MyContributionCard
+                  contributed={myContribution}
+                  expected={expectedAmount}
+                  percentage={myProgress}
+                  remaining={Math.max(expectedAmount - myContribution, 0)}
+                  status={
+                    myContribution >= expectedAmount
+                      ? "COMPLETED"
+                      : myProgress >= 50
+                      ? "ON_TRACK"
+                      : "BEHIND"
+                  }
+                />
+        </div>
+      </div>
 
-      <GroupProgress
-        goal={Number(group.goalAmount)}
-        raised={totalRaised}
-      />
-
-      <MyContributionCard
-        contributed={myContribution}
-        expected={expectedAmount}
-        percentage={myProgress}
-        remaining={Math.max(expectedAmount - myContribution, 0)}
-        status={
-          myContribution >= expectedAmount
-            ? "COMPLETED"
-            : myProgress >= 50
-            ? "ON_TRACK"
-            : "BEHIND"
-        }
-      />
+    
       {/* <MembersTable members={members} /> */}
       <MembersTable
         groupId={group.id}

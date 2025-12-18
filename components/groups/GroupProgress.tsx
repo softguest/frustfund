@@ -9,10 +9,14 @@ export default function GroupProgress({
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
-      <p className="font-medium">
-        Raised {raised.toLocaleString()} / {goal.toLocaleString()} XAF
+      <h3 className="text-lg font-semibold">Group Contribution Progress</h3>
+      <hr className="my-2" />
+      <p className="font-medium my-4 font-xl">
+        Raised Funds
       </p>
-
+      <p className="font-medium my-4 text-[24px] md:text-4xl">
+        <strong>{raised.toLocaleString()}</strong> / {goal.toLocaleString()} XAF
+      </p>
       <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
         <div
           className="bg-green-600 h-3 rounded-full"
