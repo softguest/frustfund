@@ -24,18 +24,20 @@ export default function AllTopGroups() {
   return (
     <div className="pb-6 space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+      <div className="flex items-center justify-between gap-4">
+        <div className="text-1xl sm:text-3xl md:text-2xl font-bold text-gray-800">
           Top Groups
-        </h1>
-        <Link href="/dashboard/groups/create">
-          <Button
-            variant="destructive"
-            className="text-white bg-red-600 hover:bg-red-700 shadow-md transition-all"
-          >
-            Create Group
-          </Button>
-        </Link>
+        </div>
+        <div>
+          <Link href="/dashboard/groups/create">
+            <Button
+              variant="destructive"
+              className="text-white bg-red-600 hover:bg-red-700 shadow-md transition-all"
+            >
+              Create Group
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Search Input */}

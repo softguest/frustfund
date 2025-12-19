@@ -37,7 +37,7 @@ export default function DashboardHeader({ onOpenSidebar }: DashboardHeaderProps)
         {/* RIGHT: Auth / User */}
         <div className="flex items-center">
           {/* CENTER: Search (Desktop only) */}
-        <div className="hidden md:flex flex-1 justify-center px-6">
+        <div className="md:flex flex-1 justify-center px-6">
           <input
             type="text"
             placeholder="Search..."

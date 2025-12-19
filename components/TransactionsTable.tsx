@@ -8,8 +8,8 @@ export function TransactionsTable({ transactions }: { transactions: any[] }) {
           <tr>
             <th className="p-3 text-left">Type</th>
             <th className="p-3 text-left">Amount</th>
-            <th className="p-3 text-left">Source Acc</th>
-            <th className="p-3 text-left">Destination Acc</th>
+            {/* <th className="p-3 text-left">Source Acc</th> */}
+            {/* <th className="p-3 text-left">Destination Acc</th> */}
             <th className="p-3 text-left">Date</th>
           </tr>
         </thead>
@@ -24,12 +24,12 @@ export function TransactionsTable({ transactions }: { transactions: any[] }) {
               >
                 XAF {Number(tx.amount).toLocaleString()}
               </td>
-              <td className="p-3">
+              {/* <td className="p-3">
                 {tx.fromAccountId}
               </td>
               <td className="p-3">
                 {tx.toAccountId}
-              </td>
+              </td> */}
               <td className="p-3">
                 {new Date(tx.created_at).toLocaleDateString()}
               </td>

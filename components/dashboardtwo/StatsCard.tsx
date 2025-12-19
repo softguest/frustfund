@@ -200,6 +200,7 @@ export default function StatsCard({
         group relative w-full rounded-2xl
         border border-white/20
         bg-white/30 backdrop-blur-xl
+        bg-gradient-to-br from-red-500/10 via-transparent to-transparent opacity-100
         p-4 sm:p-5
         shadow-[0_8px_30px_rgba(0,0,0,0.06)]
         transition-all duration-300

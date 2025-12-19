@@ -1,44 +1,47 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/config/db";
-import { targetGoals, accounts } from "@/config/schema";
-import { eq } from "drizzle-orm";
+import { accounts, targetGoals } from "@/config/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function GET() {
   try {
-    // Authenticated user
     const { userId } = await auth();
 
     if (!userId) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get all accounts owned by this user
-    const userAccounts = await db
-      .select()
+    // 1. Fetch ONLY target-type accounts owned by user
+    const results = await db
+      .select({
+        accountId: accounts.id,
+        accountName: accounts.name,
+        accountType: accounts.type,
+        balance: accounts.balance,
+
+        goalId: targetGoals.id,
+        goalName: targetGoals.name,
+        targetAmount: targetGoals.targetAmount,
+        deadline: targetGoals.deadline,
+      })
       .from(accounts)
-      .where(eq(accounts.userId, userId));
+      .leftJoin(
+        targetGoals,
+        eq(targetGoals.accountId, accounts.id)
+      )
+      .where(
+        and(
+          eq(accounts.userId, userId),
+          eq(accounts.type, "target")
+        )
+      );
 
-    if (userAccounts.length === 0) {
-      return NextResponse.json([]);
-    }
-
-    const accountIds = userAccounts.map(a => a.id);
-
-    // Get goals tied to *any* of the user's accounts
-    const goals = await db
-      .select()
-      .from(targetGoals)
-      .where(eq(targetGoals.userId, userId));
-
-    return NextResponse.json(goals);
+    return NextResponse.json(results);
   } catch (error) {
-    console.error("FETCH GOALS ERROR:", error);
+    console.error("FETCH TARGET ACCOUNTS ERROR:", error);
     return NextResponse.json(
-      { error: "Failed to fetch target goals" },
+      { error: "Failed to fetch target accounts" },
       { status: 500 }
     );
   }
